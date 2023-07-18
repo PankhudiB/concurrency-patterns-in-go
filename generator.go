@@ -6,14 +6,17 @@ import (
 )
 
 // generator returns a receive-only channel
-func generator(data string) <-chan string {
+func generator(data string, quit chan bool) <-chan string {
 	channel := make(chan string)
 
 	go func() {
-		for i := 0; ; i++ {
+		for i := 0; i < 3; i++ {
 			fmt.Println("Generating from generator -> ", data, i)
 			channel <- fmt.Sprintf("%s-%d", data, i)
 			time.Sleep(1 * time.Second)
+			if i == 2 {
+				quit <- true
+			}
 		}
 	}()
 	return channel
@@ -23,7 +26,7 @@ func generatorThatClosesAfterNSeconds(data string) <-chan string {
 	channel := make(chan string)
 
 	go func() {
-		for i := 0; ; i++ {
+		for i := 0; i < 5; i++ {
 			fmt.Println("Generating from generatorThatClosesAfterNSeconds -> ", data, i)
 			channel <- fmt.Sprintf("%s-%d", data, i)
 			time.Sleep(1 * time.Second)
