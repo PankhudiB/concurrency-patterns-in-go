@@ -8,9 +8,8 @@ func main() {
 		fmt.Println("Received on channel : ", <-channel1)
 	}
 
-	channel2 := generatorDataArray([]string{"a", "b", "c", "d"})
-	for i := 0; i < 5; i++ {
-		fmt.Println("Received on channel : ", <-channel2)
+	output := fanin(generator("a"), generator("b"))
+	for i := 0; i < 20; i++ {
+		fmt.Println("Received on channel : ", <-output)
 	}
-
 }
