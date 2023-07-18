@@ -11,6 +11,7 @@ func generator(data string) <-chan string {
 
 	go func() {
 		for i := 0; ; i++ {
+			fmt.Println("Generating from generator -> ", data, i)
 			channel <- fmt.Sprintf("%s-%d", data, i)
 			time.Sleep(1 * time.Second)
 		}
@@ -23,6 +24,7 @@ func generatorThatClosesAfterNSeconds(data string) <-chan string {
 
 	go func() {
 		for i := 0; ; i++ {
+			fmt.Println("Generating from generatorThatClosesAfterNSeconds -> ", data, i)
 			channel <- fmt.Sprintf("%s-%d", data, i)
 			time.Sleep(1 * time.Second)
 			if i == 4 {
