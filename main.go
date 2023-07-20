@@ -39,7 +39,7 @@ func main() {
 
 	//daisy_chaining()
 
-	out := multiplexing(generator("a", nil), generator("b", nil))
+	out := multiplexing(generator("a", nil), generator("b", nil), generator("c", nil))
 	go func() {
 		for i := 0; i < 10; i++ {
 			data, ok := <-out

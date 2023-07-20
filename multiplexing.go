@@ -5,18 +5,18 @@ import (
 	"sync"
 )
 
-func multiplexing(in1, in2 <-chan string) <-chan string {
+func multiplexing(in ...<-chan string) <-chan string {
 	var wg sync.WaitGroup
 	out := make(chan string)
 
-	wg.Add(2)
-	go processSingle(out, &wg, in1)
-	go processSingle(out, &wg, in2)
+	wg.Add(len(in))
+
+	for _, c := range in {
+		go processSingle(out, &wg, c)
+	}
 
 	go func() {
-		fmt.Println("wait start")
 		wg.Wait()
-		fmt.Println("wait ended")
 	}()
 	return out
 }
