@@ -14,9 +14,6 @@ func generator(data string, quit chan bool) <-chan string {
 			fmt.Println("Generating from generator -> ", data, i)
 			channel <- fmt.Sprintf("%s-%d", data, i)
 			time.Sleep(1 * time.Second)
-			if i == 2 {
-				quit <- true
-			}
 		}
 	}()
 	return channel

@@ -1,5 +1,10 @@
 package main
 
+import (
+	"fmt"
+	"time"
+)
+
 func main() {
 	//channel1 := generator("a", nil)
 	//for i := 0; i < 5; i++ {
@@ -32,5 +37,18 @@ func main() {
 	//	fmt.Println("Received on channel : ", data, ok)
 	//}
 
-	daisy_chaining()
+	//daisy_chaining()
+
+	out := multiplexing(generator("a", nil), generator("b", nil))
+	go func() {
+		for i := 0; i < 10; i++ {
+			data, ok := <-out
+			if !ok {
+				fmt.Println("Someone closed channel..Exiting")
+				break
+			}
+			fmt.Println("Received on channel : ", data, ok)
+		}
+	}()
+	time.Sleep(10 * time.Second)
 }
